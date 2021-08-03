@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">GTour</string>
+    <string name="menu_ShowMap" translatable="false">Map</string>
+    <string name="menu_Information" translatable="false">Information</string>
+    <string name="menu_Settings" translatable="false">Settings</string>
+    <string name="menu_Exit" translatable="false">Exit</string>
+    <string name="menu_share" translatable="false">Share</string>
+    <string name="Nickname">Your_Nickname</string>
+    <string name="Gmail_of_User">Your_Email</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_google_maps">Map</string>
+    <string name="menu_monuments" translatable="false">Monuments</string>
+
+    <string-array name="TypesOfPlace">
+        <item>Monument</item>
+        <item>Park</item>
+        <item>Place for a rest</item>
+    </string-array>
+
+    <string-array name="TypesOfSubject">
+        <item>Information about error.</item>
+        <item>Offer on upload the new place.</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

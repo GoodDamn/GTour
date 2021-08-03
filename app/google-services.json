@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "478441930586",
+    "firebase_url": "https://mapsapi-vers2.firebaseio.com",
+    "project_id": "mapsapi-vers2",
+    "storage_bucket": "mapsapi-vers2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478441930586:android:6c11faaf491c6321d07d63",
+        "android_client_info": {
+          "package_name": "good.gda.appp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478441930586-pk22nhubeorkfc6t9ujhfahvipt4jobh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ7FIfAs_JkrOV_ACT7L7aRR7eX3Slvzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478441930586-pk22nhubeorkfc6t9ujhfahvipt4jobh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

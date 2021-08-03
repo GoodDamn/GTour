@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Map">
+        <menu>
+            <item
+                android:id="@+id/nav_monuments"
+                android:title="@string/menu_monuments"
+                android:icon="@drawable/ic_monuments_24dp"/>
+            <item
+                android:id="@+id/nav_Parks"
+                android:title="Parks"
+                android:icon="@drawable/ic_parks_24dp"/>
+            <item
+                android:id="@+id/nav_Places_for_a_rest"
+                android:title="Places for a rest"
+                android:icon="@drawable/ic_place_rest_24dp"/>
+        </menu>
+    </item>
+
+    <item android:title="Main">
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_ShowMap"
+                    android:title="@string/menu_ShowMap"
+                    android:icon="@drawable/ic_map_24dp"/>
+                <item
+                    android:id="@+id/nav_Information"
+                    android:title="@string/menu_Information"
+                    android:icon="@drawable/ic_info"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Send message to developers.">
+        <menu>
+            <item
+                android:id="@+id/nav_sendErrorOrPlace"
+                android:title="Send place or error."
+                android:icon="@drawable/ic_send_error_nav"/>
+        </menu>
+    </item>
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/nav_Share"
+                android:title="@string/menu_share"
+                android:icon="@drawable/ic_share_24dp"/>
+            <item
+                android:id="@+id/nav_Exit"
+                android:title="@string/menu_Exit"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"/>
+        </menu>
+    </item>
+
+    <item android:title="For developers">
+        <menu>
+            <item
+                android:id="@+id/nav_Add_Place"
+                android:title="Add place"
+                android:icon="@drawable/ic_developer_mode"/>
+        </menu>
+    </item>
+</menu>
