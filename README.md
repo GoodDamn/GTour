@@ -1,2 +1,2 @@
 # GTour
-This application about learning monuments, parks and etc., using Google Maps API
+This application about learning monuments, parks and etc., using Google Maps API and Firebase Database
