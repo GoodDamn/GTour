@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="170dp"
-    android:background="@color/colorDark"
+    android:background="#000033"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:src="@drawable/ic_foreground_profile" />
+        android:background="@drawable/ic_foreground_profile" />
 
     <TextView
         android:id="@+id/NicknameText_nav"

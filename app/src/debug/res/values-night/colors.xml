@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBlue">#FFFFFF</color>
+    <color name="colorDark">#FFFFFF</color>
+    <color name="colorYellow">#FFFFFF</color>
+    <color name="background">#000325</color>
+    <color name="text_colour">#FFFFFF</color>
+    <color name="hint">#A8FFFFFF</color>
+    <bool name="isLightTheme">false</bool>
+</resources>

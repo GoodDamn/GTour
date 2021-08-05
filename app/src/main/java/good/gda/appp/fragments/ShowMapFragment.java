@@ -246,13 +246,17 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
                 {
                     float lat = (float) places.get(i).positionX,
                         lon = (float) places.get(i).positionY;
-                    float z = (float) Math.pow(Math.abs(location.getLatitude() - lat), 2),
-                        z1 = (float) Math.pow(Math.abs(location.getLongitude() - lon), 2);
-                    if (z1 + z < (RADIUS*RADIUS*0.000001f))
+                    int z = (int) (Math.pow(Math.abs(location.getLatitude() - lat), 2) * 1000000000),
+                        z1 = (int) (Math.pow(Math.abs(location.getLongitude() - lon), 2) * 1000000000),
+                        rad = (int) (Math.pow(RADIUS+12, 2)*0.1f);
+                    if (z1 + z < rad)
                     {
+                        Log.d("123456", z + " " + z1 + " " + rad);
                         Constants.showMessage(getContext(), places.get(i).Name_Place);
-                        databaseUser.child("exp").setValue(places.get(i).EXP + exp);
-                        databaseUser.child("visited").setValue(visitedPlaces + places.get(i).placeId + "|");
+                        exp += places.get(i).EXP;
+                        databaseUser.child("exp").setValue(exp);
+                        visitedPlaces += (places.get(i).placeId + "|");
+                        databaseUser.child("visited").setValue(visitedPlaces);
                         places.remove(i);
                         markers.get(i).remove();
                         markers.remove(i);
