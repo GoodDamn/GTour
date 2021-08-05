@@ -143,7 +143,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
                     latLng = new LatLng(posX, posY);
                     String namePlace = snapshot.child("name_Place").getValue().toString();
                     places.add(new Places(placeId, namePlace, posX,
-                            posY, exp ,t, ""));
+                            posY, exp ,t, snapshot.child("desc").getValue().toString()));
                     circles.add(gMap.addCircle(new CircleOptions()
                             .center(latLng)
                             .clickable(true)
