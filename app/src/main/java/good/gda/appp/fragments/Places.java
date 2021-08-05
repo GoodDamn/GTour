@@ -2,11 +2,11 @@ package good.gda.appp.fragments;
 
 public class Places {
 
-    String placeId, Name_Place,Type;
-    double positionX,positionY,EXP;
+    public String placeId, Name_Place,Type, desc;
+    public double positionX,positionY,EXP;
 
     public Places(String PlaceId, String name_Place, double posX,
-                  double posY, double exp, String type)
+                  double posY, double exp, String type, String desc)
     {
         this.placeId = PlaceId;
         this.Name_Place = name_Place;
@@ -14,25 +14,7 @@ public class Places {
         this.positionY = posY;
         this.EXP = exp;
         this.Type = type;
+        this.desc = desc;
     }
 
-    public String getPlaceId(){
-        return placeId;
-    }
-
-    public String getName_Place(){
-        return Name_Place;
-    }
-
-    public double getPositionX()
-    { return positionX;}
-
-    public double getPositionY()
-    {return positionY;}
-
-    public double getExp()
-    {return EXP;}
-
-    public String getType()
-    {return Type;}
 }

@@ -19,7 +19,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -141,7 +143,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
                     latLng = new LatLng(posX, posY);
                     String namePlace = snapshot.child("name_Place").getValue().toString();
                     places.add(new Places(placeId, namePlace, posX,
-                            posY, exp ,t));
+                            posY, exp ,t, ""));
                     circles.add(gMap.addCircle(new CircleOptions()
                             .center(latLng)
                             .clickable(true)
@@ -251,6 +253,12 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
                         rad = (int) (Math.pow(RADIUS+12, 2)*0.1f);
                     if (z1 + z < rad)
                     {
+                        Dialog dialog = new Dialog(getActivity());
+                        dialog.setCancelable(true);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setContentView(R.layout.dialog_description);
+                        ((TextView) dialog.findViewById(R.id.dialog_textView_name)).setText(places.get(i).Name_Place);
+                        ((TextView) dialog.findViewById(R.id.dialog_textView_description)).setText(places.get(i).desc);
                         Log.d("123456", z + " " + z1 + " " + rad);
                         Constants.showMessage(getContext(), places.get(i).Name_Place);
                         exp += places.get(i).EXP;
