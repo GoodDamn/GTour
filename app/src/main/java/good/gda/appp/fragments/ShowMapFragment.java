@@ -1,17 +1,21 @@
 package good.gda.appp.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,15 +35,23 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import good.gda.appp.R;
 import good.gda.appp.other.Constants;
@@ -48,40 +60,47 @@ import good.gda.appp.other.Constants;
 public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap gMap;
-    private DatabaseReference FireDatabase;
+    private DatabaseReference database, databaseUser;
     private FusedLocationProviderClient useLocationProviderClient;
     private Button view_Map;
     private final String type;
-    // Get location user on google map. ///////
+    private ArrayList<Places> places;
+    private ArrayList<Marker> markers;
+    private ArrayList<Circle> circles;
+    private static final double RADIUS = 25.0;
+    private String visitedPlaces = "";
+    private int exp = 0;
 
     public ShowMapFragment(String type)
     {
         this.type = type;
     }
 
-    private void getLocationUser() {
-        try {
-            useLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-            useLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    if (task.isSuccessful()) {
-                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(task.getResult().getLatitude(), task.getResult().getLongitude()), 10));
-                    }
-                }
-            });
-        } catch (Exception ex) {
-            Constants.showMessage(getContext(),"Application can't get data about your location. Please, turn on 'location'");
-        }
-
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_google_maps_activity, container, false);
         view_Map = v.findViewById(R.id.ButtonMonum_viewMap);
+        places = new ArrayList<>();
+        markers = new ArrayList<>();
+        circles = new ArrayList<>();
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseUser = FirebaseDatabase.getInstance().getReference("Users/" + firebaseUser.getUid());
+        databaseUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("visited").exists())
+                {
+                    visitedPlaces = dataSnapshot.child("visited").getValue().toString();
+                    exp = Integer.parseInt(dataSnapshot.child("exp").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+
         return v;
     }
 
@@ -99,32 +118,51 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
 
     private void ReceivingDataFromFireBase() {
         try {
-            FireDatabase = FirebaseDatabase.getInstance().getReference("Places");
-            FireDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String t = snapshot.child("type").getValue(String.class);
-                        if (t.equals(type) || type.equals("All")) {
-                            gMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(Double.parseDouble(snapshot.child("positionX").getValue().toString()), Double.parseDouble(snapshot.child("positionY").getValue().toString())))
-                                    .snippet("You can receive " + snapshot.child("exp").getValue().toString() + " EXP. ,if you visit this place.")
-                                    .title(snapshot.child("name_Place").getValue().toString())
-                                    .icon(BitmapDescriptorFactory.defaultMarker(CheckingType(t))));
-                            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(snapshot.child("positionX").getValue().toString()), Double.parseDouble(snapshot.child("positionY").getValue().toString())), 12));
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
+            database = FirebaseDatabase.getInstance().getReference("Places");
+            database.addListenerForSingleValueEvent(vel);
         } catch (Exception ex) {
             Constants.showMessage(getContext(),"Error, when data is receiving from database. Error:" + ex.getMessage());
         }
     }
+
+    private final ValueEventListener vel = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            LatLng latLng = new LatLng(0,0);
+            for (DataSnapshot snapshot : dataSnapshot.getChildren())
+            {
+                String t = snapshot.child("type").getValue(String.class),
+                    placeId = snapshot.child("placeId").getValue().toString();
+                if ((t.equals(type) || type.equals("All")) && !visitedPlaces.contains(placeId))
+                {
+                    double posX = Double.parseDouble(snapshot.child("positionX").getValue().toString()),
+                            posY = Double.parseDouble(snapshot.child("positionY").getValue().toString()),
+                            exp = Double.parseDouble(snapshot.child("exp").getValue().toString());
+                    latLng = new LatLng(posX, posY);
+                    String namePlace = snapshot.child("name_Place").getValue().toString();
+                    places.add(new Places(placeId, namePlace, posX,
+                            posY, exp ,t));
+                    circles.add(gMap.addCircle(new CircleOptions()
+                            .center(latLng)
+                            .clickable(true)
+                            .radius(RADIUS)
+                            .fillColor(Color.parseColor("#808E97FD"))
+                            .strokeWidth(1.0f)));
+                    markers.add(gMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .snippet("You can receive " + (int) exp + " EXP. ,if you visit this place.")
+                            .title(namePlace)
+                            .icon(BitmapDescriptorFactory.defaultMarker(CheckingType(t)))));
+                }
+            }
+            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
 
     // Get Permission ///////////////////////
 
@@ -144,6 +182,23 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    // Get location user on google map. ///////
+    private void getLocationUser() {
+        try {
+            useLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+            useLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if (task.isSuccessful()) {
+                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(task.getResult().getLatitude(), task.getResult().getLongitude()), 10));
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            Constants.showMessage(getContext(),"Application can't get data about your location. Please, turn on 'location'");
+        }
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -184,8 +239,34 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
+        gMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                for (short i = 0; i < places.size(); i++)
+                {
+                    float lat = (float) places.get(i).positionX,
+                        lon = (float) places.get(i).positionY;
+                    float z = (float) Math.pow(Math.abs(location.getLatitude() - lat), 2),
+                        z1 = (float) Math.pow(Math.abs(location.getLongitude() - lon), 2);
+                    if (z1 + z < (RADIUS*RADIUS*0.000001f))
+                    {
+                        Constants.showMessage(getContext(), places.get(i).Name_Place);
+                        databaseUser.child("exp").setValue(places.get(i).EXP + exp);
+                        databaseUser.child("visited").setValue(visitedPlaces + places.get(i).placeId + "|");
+                        places.remove(i);
+                        markers.get(i).remove();
+                        markers.remove(i);
+                        circles.get(i).remove();
+                        circles.remove(i);
+                        break;
+                    }
+                }
+            }
+        });
+
 
         view_Map.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 if (gMap.getMapType() == GoogleMap.MAP_TYPE_NORMAL) {
