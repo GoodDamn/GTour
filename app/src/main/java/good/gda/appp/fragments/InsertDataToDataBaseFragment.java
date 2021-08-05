@@ -49,7 +49,7 @@ public class InsertDataToDataBaseFragment extends Fragment implements AdapterVie
                             Double.parseDouble(positionX_TextBox.getText().toString()),
                             Double.parseDouble(positionY_TextBox.getText().toString()),
                             Double.parseDouble(Experience.getText().toString()),
-                            textSpinner));
+                            textSpinner, ""));
                     Message("Inserted successfully!");
                     name_Place_TextBox.getText().clear();
                     positionX_TextBox.getText().clear();
