@@ -1,4 +1,4 @@
-package good.gda.appp;
+package good.gda.appp.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -17,22 +17,20 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class SendErrorOrPlace extends Fragment  implements AdapterView.OnItemSelectedListener{
+import good.gda.appp.R;
 
-    String textSpinner;
-    Button btn_send;
-    EditText textError;
-    Spinner subject;
+public class SendErrorOrPlaceFragment extends Fragment  implements AdapterView.OnItemSelectedListener{
+
+    private String textSpinner;
+    private Button btn_send;
+    private EditText textError;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_send_error, container, false);
-        subject = v.findViewById(R.id.Spinner_TypeSubject);
         btn_send = v.findViewById(R.id.Button_Send_Error);
         textError = v.findViewById(R.id.TextError);
-
-        FillTypes_Spinner();
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,9 +38,8 @@ public class SendErrorOrPlace extends Fragment  implements AdapterView.OnItemSel
                 String text = textError.getText().toString();
 
                 if (text.isEmpty())
-                   Toast.makeText(getContext(), "Text message is empty.", Toast.LENGTH_LONG).show();
-                else
-                {
+                    Toast.makeText(getContext(), "Text message is empty.", Toast.LENGTH_LONG).show();
+                else {
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"grigorydum@gmail.com"});
                     intent.putExtra(Intent.EXTRA_TEXT, text);
@@ -54,14 +51,6 @@ public class SendErrorOrPlace extends Fragment  implements AdapterView.OnItemSel
             }
         });
         return v;
-    }
-
-    private void FillTypes_Spinner()
-    {
-        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.TypesOfSubject, android.R.layout.simple_spinner_item);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        subject.setAdapter(arrayAdapter);
-        subject.setOnItemSelectedListener(this);
     }
 
     @Override

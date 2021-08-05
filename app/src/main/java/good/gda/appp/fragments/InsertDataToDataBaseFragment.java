@@ -1,18 +1,9 @@
-package good.gda.appp;
+package good.gda.appp.fragments;
 
-import android.database.Cursor;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,25 +12,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import good.gda.appp.R;
+import good.gda.appp.fragments.Places;
 
-public class InsertDataToDataBaseActivity extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    String textSpinner;
-    Button add_username_Button;
-    EditText  name_Place_TextBox, positionX_TextBox,
+public class InsertDataToDataBaseFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+
+    private String textSpinner;
+    private Button add_username_Button;
+    private EditText  name_Place_TextBox, positionX_TextBox,
             positionY_TextBox, Experience;
-    Spinner typeOfPlace_Spinner;
-
-    String nickname;
+    private Spinner typeOfPlace_Spinner;
+    private String nickname;
 
     private DatabaseReference Myfirebase;
 

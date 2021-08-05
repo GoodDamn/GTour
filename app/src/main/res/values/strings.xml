@@ -25,4 +25,23 @@
     </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="map">Map</string>
+    <string name="parks">Parks</string>
+    <string name="places_for_a_rest">Places for a rest</string>
+    <string name="main">Main</string>
+    <string name="send_message_to_developers">Send message to developers.</string>
+    <string name="send_place_or_error">Send place or error.</string>
+    <string name="other">Other</string>
+    <string name="for_developers">For developers</string>
+    <string name="add_place">Add place</string>
+    <string name="profile">Profile</string>
+    <string name="password">Password</string>
+    <string name="welcome_to_gtour">Welcome to GTour</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="nickname">Nickname</string>
+    <string name="sign_up">Sign up</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="not_all_fields_are_filled">Not all fields are filled</string>
+    <string name="invalid_email_address">Invalid email address</string>
+    <string name="satellite">Satellite</string>
 </resources>

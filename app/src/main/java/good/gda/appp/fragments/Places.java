@@ -1,4 +1,4 @@
-package good.gda.appp;
+package good.gda.appp.fragments;
 
 public class Places {
 

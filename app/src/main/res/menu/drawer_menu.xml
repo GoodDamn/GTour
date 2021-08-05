@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="Map">
+    <item android:title="@string/map">
         <menu>
             <item
                 android:id="@+id/nav_monuments"
@@ -11,16 +11,16 @@
                 android:icon="@drawable/ic_monuments_24dp"/>
             <item
                 android:id="@+id/nav_Parks"
-                android:title="Parks"
+                android:title="@string/parks"
                 android:icon="@drawable/ic_parks_24dp"/>
             <item
                 android:id="@+id/nav_Places_for_a_rest"
-                android:title="Places for a rest"
+                android:title="@string/places_for_a_rest"
                 android:icon="@drawable/ic_place_rest_24dp"/>
         </menu>
     </item>
 
-    <item android:title="Main">
+    <item android:title="@string/main">
         <menu>
             <group
                 android:checkableBehavior="single">
@@ -36,16 +36,16 @@
         </menu>
     </item>
 
-    <item android:title="Send message to developers.">
+    <item android:title="@string/send_message_to_developers">
         <menu>
             <item
                 android:id="@+id/nav_sendErrorOrPlace"
-                android:title="Send place or error."
+                android:title="@string/send_place_or_error"
                 android:icon="@drawable/ic_send_error_nav"/>
         </menu>
     </item>
 
-    <item android:title="Other">
+    <item android:title="@string/other">
         <menu>
             <item
                 android:id="@+id/nav_Share"
@@ -58,11 +58,11 @@
         </menu>
     </item>
 
-    <item android:title="For developers">
+    <item android:title="@string/for_developers">
         <menu>
             <item
                 android:id="@+id/nav_Add_Place"
-                android:title="Add place"
+                android:title="@string/add_place"
                 android:icon="@drawable/ic_developer_mode"/>
         </menu>
     </item>

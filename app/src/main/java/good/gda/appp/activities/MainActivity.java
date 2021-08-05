@@ -1,9 +1,10 @@
-package good.gda.appp;
+package good.gda.appp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,16 +23,20 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+import good.gda.appp.R;
+import good.gda.appp.fragments.InformationFragment;
+import good.gda.appp.fragments.InsertDataToDataBaseFragment;
+import good.gda.appp.fragments.SendErrorOrPlaceFragment;
+import good.gda.appp.fragments.ShowMapFragment;
+import good.gda.appp.other.Constants;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
-    SupportMapFragment supportMapFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportMapFragment = SupportMapFragment.newInstance();
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolBar);
@@ -54,12 +60,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        supportMapFragment.getMapAsync(this);
-
-
         if (savedInstanceState == null)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShowMapFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShowMapFragment("All")).commit();
         }
     }
 
@@ -73,46 +76,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId())
         {
             case R.id.nav_Information:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new InformationFragment()).commit();
+                openFragment(new InformationFragment());
                 break;
             case R.id.nav_ShowMap:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ShowMapFragment()).commit();
+                openFragment(new ShowMapFragment("All"));
                 break;
             case R.id.nav_monuments:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MonumentsMapsActivity()).commit();
+                openFragment(new ShowMapFragment("Monument"));
                 break;
-
             case R.id.nav_sendErrorOrPlace:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SendErrorOrPlace()).commit();
+                openFragment(new SendErrorOrPlaceFragment());
                 break;
-
             case R.id.nav_Parks:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new Parks()).commit();
+                openFragment(new ShowMapFragment("Park"));
                 break;
-
             case R.id.nav_Places_for_a_rest:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new RestPlaces()).commit();
+                openFragment(new ShowMapFragment("Place for a rest"));
                 break;
-
             case R.id.nav_Share:
-                Toast toast = Toast.makeText(getApplicationContext(),"Coming soon!",Toast.LENGTH_SHORT);
-                toast.show();
+                Constants.showMessage(getApplicationContext(), "Coming soon!");
                 break;
             case R.id.nav_Add_Place:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new InsertDataToDataBaseActivity()).commit();
+                openFragment(new InsertDataToDataBaseFragment());
                 break;
             case R.id.nav_Exit:
                 moveTaskToBack(true);
@@ -120,13 +112,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 System.exit(1);
                 break;
         }
-
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
+    private void openFragment(Fragment fragment)
+    {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
+
 }

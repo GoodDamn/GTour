@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SendErrorOrPlace"
-    android:background="@drawable/bg_settings">
+    tools:context=".fragments.SendErrorOrPlaceFragment"
+    android:background="@color/background">
 
     <EditText
         android:gravity="start|top"
@@ -20,21 +20,6 @@
         app:layout_constraintVertical_bias="0.466"
         tools:layout_editor_absoluteX="1dp" />
 
-    <TextView
-        android:textColor="#ffffff"
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="23dp"
-        android:fontFamily="sans-serif-smallcaps"
-        android:text="Subject: "
-        android:textSize="22dp"
-        app:layout_constraintBottom_toTopOf="@+id/TextError"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.053"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.12" />
 
     <Button
         android:id="@+id/Button_Send_Error"
@@ -49,15 +34,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.767" />
 
-    <Spinner
-        android:textColor="#ffffff"
-        android:id="@+id/Spinner_TypeSubject"
-        android:layout_width="321dp"
-        android:layout_height="43dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.113" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
