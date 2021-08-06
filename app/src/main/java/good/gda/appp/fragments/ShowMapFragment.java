@@ -15,6 +15,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,6 +73,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
     private static final double RADIUS = 25.0;
     private String visitedPlaces = "";
     private int exp = 0;
+    private Dialog dialog;
 
     public ShowMapFragment(String type)
     {
@@ -127,6 +129,7 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+
     private final ValueEventListener vel = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -142,8 +145,11 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
                             exp = Double.parseDouble(snapshot.child("exp").getValue().toString());
                     latLng = new LatLng(posX, posY);
                     String namePlace = snapshot.child("name_Place").getValue().toString();
+                    String desc = "desc";
+                    if (snapshot.child("desc").exists())
+                        desc = snapshot.child("desc").getValue().toString();
                     places.add(new Places(placeId, namePlace, posX,
-                            posY, exp ,t, snapshot.child("desc").getValue().toString()));
+                            posY, exp ,t, desc));
                     circles.add(gMap.addCircle(new CircleOptions()
                             .center(latLng)
                             .clickable(true)
@@ -253,12 +259,14 @@ public class ShowMapFragment extends Fragment implements OnMapReadyCallback {
                         rad = (int) (Math.pow(RADIUS+12, 2)*0.1f);
                     if (z1 + z < rad)
                     {
-                        Dialog dialog = new Dialog(getActivity());
+                        Dialog dialog = new Dialog(getActivity(), R.style.DialogWindow);
                         dialog.setCancelable(true);
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setContentView(R.layout.dialog_description);
                         ((TextView) dialog.findViewById(R.id.dialog_textView_name)).setText(places.get(i).Name_Place);
-                        ((TextView) dialog.findViewById(R.id.dialog_textView_description)).setText(places.get(i).desc);
+                        TextView desc = dialog.findViewById(R.id.dialog_textView_description);
+                        desc.setText(places.get(i).desc);
+                        desc.setMovementMethod(new ScrollingMovementMethod());
+                        dialog.show();
                         Log.d("123456", z + " " + z1 + " " + rad);
                         Constants.showMessage(getContext(), places.get(i).Name_Place);
                         exp += places.get(i).EXP;

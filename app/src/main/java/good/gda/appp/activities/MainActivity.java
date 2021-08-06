@@ -103,9 +103,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_Share:
                 Constants.showMessage(getApplicationContext(), "Coming soon!");
                 break;
-            case R.id.nav_Add_Place:
-                openFragment(new InsertDataToDataBaseFragment());
-                break;
             case R.id.nav_Exit:
                 moveTaskToBack(true);
                 android.os.Process.killProcess(android.os.Process.myPid());

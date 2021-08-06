@@ -17,36 +17,18 @@
                 android:id="@+id/nav_Places_for_a_rest"
                 android:title="@string/places_for_a_rest"
                 android:icon="@drawable/ic_place_rest_24dp"/>
-        </menu>
-    </item>
-
-    <item android:title="@string/main">
-        <menu>
-            <group
-                android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_ShowMap"
-                    android:title="@string/menu_ShowMap"
-                    android:icon="@drawable/ic_map_24dp"/>
-                <item
-                    android:id="@+id/nav_Information"
-                    android:title="@string/menu_Information"
-                    android:icon="@drawable/ic_info"/>
-            </group>
-        </menu>
-    </item>
-
-    <item android:title="@string/send_message_to_developers">
-        <menu>
+            <item
+                android:id="@+id/nav_ShowMap"
+                android:title="@string/menu_ShowMap"
+                android:icon="@drawable/ic_map_24dp"/>
+            <item
+                android:id="@+id/nav_Information"
+                android:title="@string/menu_Information"
+                android:icon="@drawable/ic_info"/>
             <item
                 android:id="@+id/nav_sendErrorOrPlace"
                 android:title="@string/send_place_or_error"
                 android:icon="@drawable/ic_send_error_nav"/>
-        </menu>
-    </item>
-
-    <item android:title="@string/other">
-        <menu>
             <item
                 android:id="@+id/nav_Share"
                 android:title="@string/menu_share"
@@ -58,12 +40,5 @@
         </menu>
     </item>
 
-    <item android:title="@string/for_developers">
-        <menu>
-            <item
-                android:id="@+id/nav_Add_Place"
-                android:title="@string/add_place"
-                android:icon="@drawable/ic_developer_mode"/>
-        </menu>
-    </item>
+
 </menu>
